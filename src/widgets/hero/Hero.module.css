@@ -1,0 +1,7 @@
+.hero{display:flex;gap:24px;align-items:center;padding:40px 0}
+.left{flex:1}
+.lead{color:var(--muted);margin-top:8px}
+.ctaRow{margin-top:20px;display:flex;gap:12px}
+.primary{background:var(--accent);color:white;padding:10px 16px;border-radius:8px}
+.secondary{border:1px solid var(--accent);color:var(--accent);padding:10px 16px;border-radius:8px}
+.right{width:260;flex-shrink:0}

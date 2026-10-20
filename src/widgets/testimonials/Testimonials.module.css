@@ -1,0 +1,4 @@
+.section{padding:28px 0}
+.row{display:flex;gap:12px}
+.card{flex:1;border-left:4px solid var(--accent);padding:12px;background:#fbfeff;border-radius:6px}
+.card cite{display:block;margin-top:8px;color:var(--muted)}

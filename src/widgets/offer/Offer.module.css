@@ -1,0 +1,4 @@
+.section{padding:28px 0;text-align:center}
+.box{display:inline-block;border:1px solid #e6eef2;padding:18px;border-radius:12px}
+.price{font-weight:700;font-size:1.6rem;color:var(--accent)}
+.button{display:inline-block;margin-top:12px;background:var(--accent);color:#fff;padding:10px 14px;border-radius:8px}

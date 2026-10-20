@@ -1,0 +1,4 @@
+.section{padding:28px 0}
+.item{margin-bottom:12px}
+.item dt{font-weight:700}
+.item dd{margin:6px 0 0;color:var(--muted)}

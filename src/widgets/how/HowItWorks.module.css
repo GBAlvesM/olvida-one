@@ -1,0 +1,3 @@
+.section{padding:28px 0}
+.list{display:flex;gap:12px;list-style:none;padding:0;margin:0}
+.item{flex:1;border:1px dashed #e6eef2;padding:12px;border-radius:8px}
