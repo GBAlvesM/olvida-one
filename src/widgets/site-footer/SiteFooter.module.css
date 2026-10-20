@@ -1,0 +1,4 @@
+.footer{padding:24px;background:var(--color-surface);border-top:1px solid rgba(255,255,255,0.02);color:var(--color-text-muted)}
+.brand{font-weight:700;color:var(--color-accent);cursor:pointer}
+.links{display:flex;gap:12px;margin-top:8px}
+.note{margin-top:12px;font-size:0.9rem}

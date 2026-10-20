@@ -9,13 +9,16 @@ const STEPS = [
 
 export default function HowItWorks(){
   return (
-    <section id="how" className={styles.section}>
-      <h2>Como funciona</h2>
+    <section id="como-funciona" className={styles.section} aria-labelledby="how-title">
+      <h2 id="how-title">Como funciona</h2>
       <ol className={styles.list}>
-        {STEPS.map(s=> (
+        {STEPS.map((s,i)=> (
           <li key={s.title} className={styles.item}>
-            <strong>{s.title}</strong>
-            <p>{s.desc}</p>
+            <div className={styles.icon} aria-hidden>{i+1}</div>
+            <div>
+              <strong>{s.title}</strong>
+              <p>{s.desc}</p>
+            </div>
           </li>
         ))}
       </ol>

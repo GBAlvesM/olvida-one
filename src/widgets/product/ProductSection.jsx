@@ -20,16 +20,16 @@ export default function ProductSection(){
   }
 
   return (
-    <section id="product" className={styles.section}>
+    <section id="produto" className={styles.section} aria-labelledby="product-title">
       <h2>Produto</h2>
       <div className={styles.row}>
         <div className={styles.deviceWrap}>
           <ProductDevice color={color} activeMode={active} glow={pulse} />
           <div className={styles.controls}>
-            <div className={styles.colorPick}>
+            <div className={styles.colorPick} role="radiogroup" aria-label="Escolha a cor">
               <span>Cor:</span>
               {COLORS.map(c=> (
-                <button key={c.id} className={`${styles.swatch} ${c.value===color?styles.active:''}`} onClick={()=>setColor(c.value)} aria-label={c.name}>
+                <button key={c.id} role="radio" aria-checked={c.value===color} className={`${styles.swatch} ${c.value===color?styles.active:''}`} onClick={()=>setColor(c.value)} aria-label={c.name}>
                   <span style={{background:c.value}} />
                 </button>
               ))}

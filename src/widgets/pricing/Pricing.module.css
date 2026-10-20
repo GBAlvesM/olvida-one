@@ -1,0 +1,8 @@
+.section{padding:28px 0}
+.row{display:flex;gap:12px}
+.card{flex:1;padding:16px;border-radius:12px;background:var(--color-surface);border:1px solid rgba(255,255,255,0.03);position:relative}
+.popular{box-shadow:var(--shadow-glow)}
+.badge{position:absolute;top:-12px;right:12px;background:var(--color-accent);color:var(--color-on-primary);padding:6px 8px;border-radius:8px;font-weight:700}
+.price{font-size:1.2rem;font-weight:700;color:var(--color-primary)}
+.cta{margin-top:12px;background:var(--color-primary);color:var(--color-on-primary);padding:8px 12px;border-radius:8px;border:none}
+.desc{color:var(--color-text-muted)}

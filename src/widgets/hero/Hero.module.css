@@ -1,7 +1,15 @@
 .hero{display:flex;gap:24px;align-items:center;padding:40px 0}
 .left{flex:1}
-.lead{color:var(--muted);margin-top:8px}
+.lead{color:var(--color-text-muted);margin-top:8px}
 .ctaRow{margin-top:20px;display:flex;gap:12px}
-.primary{background:var(--accent);color:white;padding:10px 16px;border-radius:8px}
-.secondary{border:1px solid var(--accent);color:var(--accent);padding:10px 16px;border-radius:8px}
-.right{width:260;flex-shrink:0}
+.primary{background:var(--color-primary);color:var(--color-on-primary);padding:10px 16px;border-radius:8px;border:none}
+.secondary{border:1px solid var(--color-primary);color:var(--color-primary);padding:10px 16px;border-radius:8px;background:transparent}
+.seal{margin-top:12px;color:var(--color-text-muted);font-weight:600}
+.right{width:300px;flex-shrink:0}
+.deviceFloat{display:flex;justify-content:center;align-items:center;animation:float 6s ease-in-out infinite}
+
+@keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-10px)}100%{transform:translateY(0)}}
+
+@media (prefers-reduced-motion: reduce){
+  .deviceFloat{animation:none}
+}
