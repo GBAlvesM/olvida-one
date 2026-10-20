@@ -1,0 +1,5 @@
+.page{max-width:980px;margin:0 auto;padding:24px}
+.header{display:flex;justify-content:space-between;align-items:center;padding:8px 0}
+.brand{font-weight:700;color:var(--color-accent);font-size:1.2rem}
+.footer{text-align:center;color:var(--color-text-muted);padding:36px 0}
+.disclaimer{font-size:0.85rem;color:var(--color-text-muted);margin-top:8px}
