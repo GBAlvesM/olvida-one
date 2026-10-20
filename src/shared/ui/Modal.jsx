@@ -9,11 +9,20 @@ export default function Modal({ children, onClose, labelledBy }){
 
   useEffect(()=>{
     const prevOverflow = document.body.style.overflow
+    const previousActive = document.activeElement
     document.body.style.overflow = 'hidden'
-    // focus management
-    const btn = ref.current && ref.current.querySelector('button')
+    // focus management: focus first focusable button inside modal
+    const btn = ref.current && ref.current.querySelector('button, [tabindex]:not([tabindex="-1"])')
     if(btn) btn.focus()
-    return ()=>{ document.body.style.overflow = prevOverflow }
+    return ()=>{
+      document.body.style.overflow = prevOverflow
+      // restore focus to previous active element if possible
+      try {
+        if(previousActive && previousActive.focus) previousActive.focus()
+      } catch (err) {
+        // ignore focus restore errors
+      }
+    }
   },[])
 
   return (
