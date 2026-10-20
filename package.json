@@ -5,13 +5,15 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "echo \"No lint configured\""
+    "lint": "eslint \"src/**/*.{js,jsx}\" --max-warnings=0"
   },
   "dependencies": {
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
+    "eslint": "8.46.0",
+    "eslint-plugin-react": "7.33.2",
     "vite": "4.4.9"
   }
 }
