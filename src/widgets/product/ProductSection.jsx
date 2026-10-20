@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import ProductDevice from './ProductDevice'
+import { product as productMock, SpecList } from '../../entities/product'
 import styles from './ProductSection.module.css'
 
 const COLORS = [
@@ -51,7 +52,9 @@ export default function ProductSection(){
         </div>
 
         <div className={styles.copy}>
-          <p>O Olvida One é um gadget de bolso fictício. Escolha a cor e experimente o flash — o pulso é apenas visual no protótipo.</p>
+          <h3>{productMock.name}</h3>
+          <p>{productMock.tagline}</p>
+          <SpecList specs={productMock.specs} />
           <p className={styles.note}>As cores disponíveis: Grafite Noturno, Branco Névoa e Violeta Esquecido.</p>
         </div>
       </div>

@@ -1,0 +1,4 @@
+.list{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.item{display:flex;gap:8px}
+.term{font-weight:700;color:var(--color-text)}
+.desc{color:var(--color-text-muted)}
