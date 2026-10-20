@@ -6,6 +6,7 @@ import Testimonials from '../../widgets/testimonials/Testimonials'
 import Offer from '../../widgets/offer/Offer'
 import FAQ from '../../widgets/faq/FAQ'
 import Modes from '../../widgets/modes/Modes'
+import ProductSection from '../../widgets/product/ProductSection'
 import styles from './LandingPage.module.css'
 
 export default function LandingPage(){
@@ -20,6 +21,7 @@ export default function LandingPage(){
 
       <main>
         <Hero />
+        <ProductSection />
         <Modes />
         <Benefits />
         <HowItWorks />

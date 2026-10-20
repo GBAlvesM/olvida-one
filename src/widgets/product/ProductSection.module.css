@@ -1,0 +1,17 @@
+.section{padding:28px 0}
+.row{display:flex;gap:20px;align-items:flex-start}
+.deviceWrap{flex:0 0 220px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.controls{display:flex;flex-direction:column;gap:10px;width:220px}
+.colorPick{display:flex;align-items:center;gap:8px}
+.swatch{border:1px solid rgba(255,255,255,0.06);background:transparent;padding:6px;border-radius:8px}
+.swatch span{display:inline-block;width:28px;height:18px;border-radius:6px}
+.swatch.active{outline:2px solid var(--color-accent)}
+.modePick{display:flex;align-items:center;gap:8px}
+.actions{display:flex}
+.flashBtn{background:var(--color-primary);color:var(--color-on-primary);padding:8px 12px;border-radius:8px;border:none}
+.copy{flex:1;color:var(--color-text-muted)}
+.note{margin-top:12px;font-size:0.95rem}
+
+@media (prefers-reduced-motion: reduce){
+  .flashBtn{transition:none}
+}

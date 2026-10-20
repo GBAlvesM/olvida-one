@@ -1,0 +1,40 @@
+:root {
+  /* Cores */
+  --color-bg: #070B16;
+  --color-surface: #0F1626;
+  --color-surface-2: #17203A;
+  --color-border: #26314F;
+  --color-text: #EAF1FF;
+  --color-text-muted: #9AA8C7;
+  --color-primary: #38E8FF;        /* ciano "flash" */
+  --color-primary-strong: #00B8D9;
+  --color-on-primary: #041018;     /* texto sobre botão primário */
+  --color-accent: #B28CFF;         /* violeta */
+  --color-danger: #FF6B6B;
+  --color-success: #5BE3A4;
+  --color-flash: #FFFFFF;
+
+  /* Tipografia */
+  --font-heading: 'Sora', system-ui, sans-serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+
+  /* Espaçamento (escala 4/8) */
+  --space-1: 4px;  --space-2: 8px;   --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px;  --space-7: 48px; --space-8: 64px; --space-9: 96px;
+
+  /* Raio e sombra */
+  --radius-sm: 8px; --radius-md: 16px; --radius-lg: 24px; --radius-pill: 999px;
+  --shadow-glow: 0 0 40px rgba(56, 232, 255, 0.25);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.35);
+
+  /* Layout */
+  --container-max: 1120px;
+
+  /* Device color fallback */
+  --device-color: #1B2238;
+}
+
+/* prefers-reduced-motion: disable animations */
+@media (prefers-reduced-motion: reduce) {
+  .prefer-reduced-motion { animation: none !important; transition: none !important; }
+}
