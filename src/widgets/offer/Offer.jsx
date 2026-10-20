@@ -7,7 +7,7 @@ export default function Offer(){
       <h2>Oferta</h2>
       <div className={styles.box}>
         <div className={styles.price}>R$ 0 / mês</div>
-        <p className={styles.desc}>Plano gratuito com funcionalidades essenciais — sem cartão.</p>
+        <p className={styles.desc}>Plano gratuito do protótipo — sem cobrança, sem coleta de dados.</p>
         <a className={styles.button} href="#signup" onClick={(e)=>{e.preventDefault(); alert('CTAs são funcionais no protótipo (mock).')}}>Começar grátis</a>
       </div>
     </section>

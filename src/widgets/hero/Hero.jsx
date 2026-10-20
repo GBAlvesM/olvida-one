@@ -5,8 +5,8 @@ export default function Hero(){
   return (
     <section className={styles.hero}>
       <div className={styles.left}>
-        <h1>Olvida — Organize suas notas e lembretes com menos esforço</h1>
-        <p className={styles.lead}>Uma caixa digital inteligente que ajuda estudantes e profissionais a lembrar o que importa, com foco em simplicidade e privacidade.</p>
+        <h1>Olvida One — Esqueça o que não precisa lembrar</h1>
+        <p className={styles.lead}>Um gadget de bolso fictício que apaga, com consentimento, pequenas lembranças que atrapalham o dia: micos, spoilers e jingles.</p>
         <div className={styles.ctaRow}>
           <a className={styles.primary} href="#offer">Experimentar — R$0</a>
           <a className={styles.secondary} href="#how">Como funciona</a>

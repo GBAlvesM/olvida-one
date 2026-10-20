@@ -3,8 +3,8 @@ import styles from './Benefits.module.css'
 
 const ITEMS = [
   {title:'Simplicidade', desc:'Interface limpa que exige poucos cliques.'},
-  {title:'Privacidade', desc:'Dados ficam no seu dispositivo — sem nuvem pública.'},
-  {title:'Foco', desc:'Ferramentas para organizar tarefas e revisar o que importa.'}
+  {title:'Consentimento', desc:'O aparelho só afeta quem o usa — apagar é sempre por escolha do usuário.'},
+  {title:'Foco', desc:'Remove pequenas distrações (mico, spoiler, jingle) para ajudar no dia a dia.'}
 ]
 
 export default function Benefits(){
