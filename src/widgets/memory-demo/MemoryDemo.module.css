@@ -2,13 +2,21 @@
 .row{display:flex;gap:20px;align-items:flex-start}
 .device{flex:0 0 140px}
 .controls{flex:1;display:flex;flex-direction:column;gap:12px}
-.modes{display:flex;gap:8px;align-items:center}
+.selector{display:flex;gap:8px}
+.modeBtn{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:8px 10px;border-radius:8px}
+.modeBtn.active{outline:2px solid var(--color-accent)}
+.controls textarea{min-height:80px;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:var(--color-surface);color:var(--color-text)}
+.rowMeta{display:flex;justify-content:space-between;align-items:center}
+.exampleBtn{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:6px 8px;border-radius:8px}
+.counter{color:var(--color-text-muted)}
 .sample{background:var(--color-surface);padding:12px;border-radius:8px}
 .dissolve{animation:dissolve 600ms ease-out forwards}
 @keyframes dissolve{0%{opacity:1;filter:none}100%{opacity:0;filter:blur(4px)}}
 .actions{display:flex;gap:8px}
 .eraseBtn{background:var(--color-danger);color:white;padding:8px 12px;border-radius:8px;border:none}
 .linkBtn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 12px;border-radius:8px}
+.session{color:var(--color-text-muted);margin-top:8px}
+.message{margin-top:8px;color:var(--color-text)}
 
 @media (prefers-reduced-motion: reduce){
   .dissolve{animation:none}

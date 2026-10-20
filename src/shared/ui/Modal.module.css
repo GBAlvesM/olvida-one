@@ -1,0 +1,2 @@
+.backdrop{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.5);z-index:60}
+.box{background:var(--color-surface);padding:20px;border-radius:12px;color:var(--color-text);max-width:520px;width:90%}
