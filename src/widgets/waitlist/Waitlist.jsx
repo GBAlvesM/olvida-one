@@ -1,13 +1,16 @@
 import React from 'react'
 import styles from './Waitlist.module.css'
-import WaitlistForm from '../../features/waitlist-signup/ui/WaitlistForm'
+import { WaitlistForm } from '../../features/waitlist-signup'
 
-export default function Waitlist(){
+export default function Waitlist({ selectedPlanId, onPlanChange }){
   return (
     <section id="lista" className={styles.section} aria-labelledby="waitlist-title">
-      <h2 id="waitlist-title">Entrar na lista</h2>
-      <p>Cadastre-se para receber notícias e acessar o protótipo.</p>
-      <WaitlistForm />
+      <div className={styles.intro}>
+        <span className={styles.kicker}>O próximo passo é seu</span>
+        <h2 id="waitlist-title">Entre na lista de espera</h2>
+        <p>Escolha seu plano de interesse. A lista é uma simulação local: seus dados não saem desta página.</p>
+      </div>
+      <WaitlistForm selectedPlanId={selectedPlanId} onPlanChange={onPlanChange} />
     </section>
   )
 }

@@ -1,8 +1,8 @@
-import React, {useState, useRef, useEffect} from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styles from './MemoryDemo.module.css'
-import ProductDevice from '../product/ProductDevice'
-import { scrollToSection } from '../../shared/lib/scrollToSection'
+import { scrollToSection } from '../../shared/lib'
 import { modes } from '../../entities/memory-mode'
+import { ProductDevice } from '../../entities/product'
 
 export default function MemoryDemo(){
   const [mode, setMode] = useState(modes[0].id)
@@ -11,12 +11,12 @@ export default function MemoryDemo(){
   const [status, setStatus] = useState('idle') // idle | flashing | erased
   const [message, setMessage] = useState('')
   const timeouts = useRef([])
-  const textareaRef = useRef(null)
+  const modeButtons = useRef([])
 
   useEffect(()=>{
     return ()=>{
-      // cleanup timeouts
       timeouts.current.forEach(t=>clearTimeout(t))
+      timeouts.current = []
     }
   },[])
 
@@ -25,71 +25,117 @@ export default function MemoryDemo(){
     setText(m.placeholder)
   }
 
-  function handleModeSelect(id){ setMode(id) }
+  function handleModeSelect(id){
+    if (status === 'idle') setMode(id)
+  }
 
-  async function handleForget(){
+  function handleModeKeyDown(event, index) {
+    let nextIndex = index
+    if (event.key === 'ArrowRight' || event.key === 'ArrowDown') nextIndex = (index + 1) % modes.length
+    else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') nextIndex = (index - 1 + modes.length) % modes.length
+    else return
+
+    event.preventDefault()
+    const nextMode = modes[nextIndex]
+    setMode(nextMode.id)
+    modeButtons.current[nextIndex]?.focus()
+  }
+
+  function handleForget(){
     if(!text.trim() || status !== 'idle') return
     const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    // start flashing
-    setStatus('flashing')
-    if(!prefersReduced){
-      // trigger device flash via glow prop (handled by ProductDevice through external prop pulse)
-      // keep flashing for ~600ms
-      await new Promise(res=>{
-        const t = setTimeout(res, 600)
-        timeouts.current.push(t)
-      })
+    const finishErasing = () => {
+      setStatus('erased')
+      setMessage('Memória apagada. Do que estávamos falando mesmo?')
+      setCount(currentCount=>currentCount+1)
+      // Keep the text briefly so its dissolve transition can finish before clearing.
+      const clearTextTimeout = window.setTimeout(()=>setText(''), 550)
+      timeouts.current.push(clearTextTimeout)
+      const returnToIdleTimeout = window.setTimeout(()=>{
+        setMessage('')
+        setStatus('idle')
+      }, 2500)
+      timeouts.current.push(returnToIdleTimeout)
     }
-    // mark erased
-    setStatus('erased')
-    setMessage('Memória apagada. Do que estávamos falando mesmo?')
-    // increment counter and clear textarea after a short delay for dissolve animation
-    const t1 = setTimeout(()=>{
-      setCount(c=>c+1)
-      setText('')
-    }, 200)
-    timeouts.current.push(t1)
 
-    const t2 = setTimeout(()=>{
-      setMessage('')
-      setStatus('idle')
-    }, 2500)
-    timeouts.current.push(t2)
+    if(prefersReduced){
+      finishErasing()
+      return
+    }
+
+    setStatus('flashing')
+    const flashTimeout = window.setTimeout(finishErasing, 600)
+    timeouts.current.push(flashTimeout)
   }
 
   const activeModeObj = modes.find(m=>m.id===mode)
 
   return (
     <section id="demo" className={styles.section} aria-labelledby="demo-title">
-      <h2 id="demo-title">Demonstração</h2>
-      <div className={styles.row}>
-        <div className={styles.device}><ProductDevice color="var(--device-color)" activeMode={mode} glow={status==='flashing'} /></div>
+      <div className={styles.heading}>
+        <span className={styles.kicker}>Sua vez de testar</span>
+        <h2 id="demo-title">Teste o esquecimento</h2>
+        <p>Escolha um modo, escreva a lembrança e deixe o resto com a imaginação.</p>
+      </div>
+      <div className={styles.demoCard}>
+        <div className={styles.devicePanel}>
+          <div className={styles.deviceAura} />
+          <ProductDevice activeMode={mode} glow={status==='flashing'} />
+          <span className={styles.deviceCaption}>Olvida One · {activeModeObj.name}</span>
+        </div>
         <div className={styles.controls}>
-          <div className={styles.selector} role="radiogroup" aria-label="Modos">
-            {modes.map(m=> (
-              <button key={m.id} role="radio" aria-checked={m.id===mode} className={`${styles.modeBtn} ${m.id===mode?styles.active:''}`} onClick={()=>handleModeSelect(m.id)}>{m.name}</button>
+          <span className={styles.fieldLabel}>1. Escolha o modo</span>
+          <div className={styles.selector} role="radiogroup" aria-label="Escolha o modo de esquecimento">
+            {modes.map((m, index)=> (
+              <button
+                key={m.id}
+                ref={element => { modeButtons.current[index] = element }}
+                type="button"
+                role="radio"
+                aria-checked={m.id===mode}
+                tabIndex={m.id===mode ? 0 : -1}
+                data-mode={m.id}
+                disabled={status !== 'idle'}
+                className={`${styles.modeBtn} ${m.id===mode?styles.active:''}`}
+                onClick={()=>handleModeSelect(m.id)}
+                onKeyDown={event => handleModeKeyDown(event, index)}
+              >
+                <span className={styles.modeIcon} aria-hidden="true">{m.id === 'cringe' ? 'C' : m.id === 'spoiler' ? 'S' : 'J'}</span>
+                <span className={styles.modeName}>{m.name}</span>
+                <span className={styles.modeExample}>{m.id === 'cringe' ? 'Micos' : m.id === 'spoiler' ? 'Spoilers' : 'Jingles'}</span>
+              </button>
             ))}
           </div>
 
-          <textarea
-            ref={textareaRef}
-            maxLength={80}
-            placeholder={activeModeObj.placeholder}
-            value={text}
-            onChange={(e)=>setText(e.target.value)}
-            aria-label="Texto a apagar"
-          />
-          <div className={styles.rowMeta}>
-            <button className={styles.exampleBtn} onClick={useExample}>Usar exemplo</button>
-            <div className={styles.counter}>{text.length}/80</div>
+          <label className={styles.fieldLabel} htmlFor="memory-text">2. O que quer esquecer?</label>
+          <div className={`${styles.textField} ${status === 'erased' ? styles.dissolving : ''}`}>
+            <textarea
+              id="memory-text"
+              maxLength={80}
+              placeholder={activeModeObj.placeholder}
+              value={text}
+              onChange={(e)=>setText(e.target.value)}
+              disabled={status !== 'idle'}
+              aria-describedby="memory-counter"
+            />
+            <div className={styles.fieldFooter}>
+              <button type="button" className={styles.exampleBtn} onClick={useExample} disabled={status !== 'idle'}>Usar exemplo</button>
+              <span id="memory-counter" className={styles.counter}>{text.length}<span>/80</span></span>
+            </div>
           </div>
 
           <div className={styles.actions}>
-            <button onClick={handleForget} disabled={!text.trim() || status!=='idle'} className={styles.eraseBtn}>Esquecer agora</button>
-            <button onClick={()=>scrollToSection('produto')} className={styles.linkBtn}>Ver produto</button>
+            <button onClick={handleForget} disabled={!text.trim() || status!=='idle'} className={styles.eraseBtn}>
+              <span className={styles.buttonSpark} aria-hidden="true">✦</span>
+              {status === 'flashing' ? 'Um instante…' : status === 'erased' ? 'Apagado' : 'Esquecer agora'}
+            </button>
+            <button onClick={()=>scrollToSection('produto')} className={styles.linkBtn}>Conheça o aparelho</button>
           </div>
 
-          <div className={styles.session} aria-live="polite">Memórias apagadas nesta sessão: {count}</div>
+          <div className={styles.statusRow}>
+            <span className={styles.session} aria-live="polite">Memórias apagadas nesta sessão: <strong>{count}</strong></span>
+            <span className={styles.privacy}><span /> Só você. Só com sua escolha.</span>
+          </div>
           <div className={styles.message} aria-live="polite">{message}</div>
         </div>
       </div>

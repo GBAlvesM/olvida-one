@@ -2,31 +2,34 @@ import React from 'react'
 import styles from './Benefits.module.css'
 
 const ITEMS = [
-  {title:'Simplicidade', desc:'Interface limpa que exige poucos cliques.'},
-  {title:'Consentimento', desc:'O aparelho só afeta quem o usa — apagar é sempre por escolha do usuário.'},
-  {title:'Foco', desc:'Remove pequenas distrações (mico, spoiler, jingle) para ajudar no dia a dia.'},
-  {title:'Portátil', desc:'Design de bolso, leve e discreto.'},
-  {title:'Sem coleta', desc:'Nenhum dado é enviado — protótipo sem armazenamento.'},
-  {title:'Rápido', desc:'Pulso suave que não interrompe o fluxo do seu dia.'}
+  {title:'Esquecimento seletivo', desc:'Só apaga o que você escolher. Nada além do modo selecionado.'},
+  {title:'Só funciona em você', desc:'Consentimento de fábrica: o flash não faz nada em ninguém que não seja o dono.'},
+  {title:'Cabe no bolso', desc:'14 cm e 38 g. Mais leve que o seu cartão de fidelidade acumulado.'},
+  {title:'30 dias de bateria', desc:'Carregou uma vez, esqueceu o carregador. (Combina.)'},
+  {title:'Flash suave e único', desc:'Um pulso de luz delicado. Sem estrobo, sem drama.'},
+  {title:'Garantia de esquecimento', desc:'Se você lembrar, devolvemos o dinheiro. Se esquecer que comprou, também.'}
 ]
 
 export default function Benefits(){
   return (
     <section id="beneficios" className={styles.section} aria-labelledby="beneficios-title">
-      <h2>Benefícios</h2>
+      <div className={styles.heading}>
+        <span className={styles.kicker}>Pequenos alívios, grandes efeitos</span>
+        <h2 id="beneficios-title">O que você pode deixar para trás</h2>
+      </div>
       <div className={styles.grid}>
-        {ITEMS.map(i=> (
-          <div key={i.title} className={styles.card}>
-            <div className={styles.icon} aria-hidden>✓</div>
-            <h3>{i.title}</h3>
-            <p>{i.desc}</p>
-          </div>
+        {ITEMS.map((item, index)=> (
+          <article key={item.title} className={styles.card}>
+            <div className={styles.icon} aria-hidden="true">0{index + 1}</div>
+            <h3>{item.title}</h3>
+            <p>{item.desc}</p>
+          </article>
         ))}
       </div>
       <div className={styles.stats}>
-        <div className={styles.stat}><strong>1.274</strong><span>usuários (fictício)</span></div>
-        <div className={styles.stat}><strong>4.8</strong><span>nota média</span></div>
-        <div className={styles.stat}><strong>3</strong><span>modos</span></div>
+        <div className={styles.stat}><strong>0</strong><span>spoilers lembrados</span></div>
+        <div className={styles.stat}><strong>38 g</strong><span>de pura paz</span></div>
+        <div className={styles.stat}><strong>30 dias</strong><span>de bateria</span></div>
       </div>
     </section>
   )

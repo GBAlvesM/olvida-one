@@ -1,0 +1,59 @@
+.wrap {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 176px;
+  isolation: isolate;
+}
+
+.deviceSvg {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.segment {
+  fill: rgba(234, 241, 255, 0.2);
+}
+
+.segmentActive {
+  fill: var(--color-primary);
+  filter: drop-shadow(0 0 6px rgba(56, 232, 255, 0.88));
+}
+
+.glow {
+  position: absolute;
+  z-index: 2;
+  inset: -22% -48%;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.9) 0, rgba(56, 232, 255, 0.62) 12%, rgba(56, 232, 255, 0.22) 34%, transparent 68%);
+  mix-blend-mode: screen;
+}
+
+.flash .glow {
+  animation: flash-pulse 600ms cubic-bezier(0.2, 0.7, 0.2, 1) 1 both;
+}
+
+.flash .deviceSvg {
+  filter: drop-shadow(0 0 28px rgba(56, 232, 255, 0.62));
+}
+
+@keyframes flash-pulse {
+  0% { opacity: 0; transform: scale(0.82); }
+  24% { opacity: 0.85; transform: scale(1.04); }
+  100% { opacity: 0; transform: scale(1.22); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flash .glow {
+    animation: none;
+  }
+
+  .flash .deviceSvg {
+    filter: none;
+  }
+}

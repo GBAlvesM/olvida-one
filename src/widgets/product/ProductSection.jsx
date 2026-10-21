@@ -1,6 +1,5 @@
-import React, {useState} from 'react'
-import ProductDevice from './ProductDevice'
-import { product as productMock, SpecList } from '../../entities/product'
+import React, { useRef, useState } from 'react'
+import { ProductDevice, product as productMock, SpecList } from '../../entities/product'
 import styles from './ProductSection.module.css'
 
 const COLORS = [
@@ -11,51 +10,60 @@ const COLORS = [
 
 export default function ProductSection(){
   const [color, setColor] = useState(COLORS[0].value)
-  const [active, setActive] = useState('cringe')
-  const [pulse, setPulse] = useState(false)
+  const swatchRefs = useRef([])
 
-  function triggerPulse(){
-    // single pulse: toggle pulse true briefly
-    setPulse(true)
-    setTimeout(()=>setPulse(false), 750)
+  function handleColorKeyDown(event, index) {
+    let nextIndex = index
+    if (event.key === 'ArrowRight' || event.key === 'ArrowDown') nextIndex = (index + 1) % COLORS.length
+    else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') nextIndex = (index - 1 + COLORS.length) % COLORS.length
+    else return
+
+    event.preventDefault()
+    const nextColor = COLORS[nextIndex]
+    setColor(nextColor.value)
+    swatchRefs.current[nextIndex]?.focus()
   }
 
   return (
     <section id="produto" className={styles.section} aria-labelledby="product-title">
-      <h2>Produto</h2>
-      <div className={styles.row}>
-        <div className={styles.deviceWrap}>
-          <ProductDevice color={color} activeMode={active} glow={pulse} />
-          <div className={styles.controls}>
-            <div className={styles.colorPick} role="radiogroup" aria-label="Escolha a cor">
-              <span>Cor:</span>
-              {COLORS.map(c=> (
-                <button key={c.id} role="radio" aria-checked={c.value===color} className={`${styles.swatch} ${c.value===color?styles.active:''}`} onClick={()=>setColor(c.value)} aria-label={c.name}>
-                  <span style={{background:c.value}} />
-                </button>
-              ))}
-            </div>
-
-            <div className={styles.modePick}>
-              <span>Modo:</span>
-              <select value={active} onChange={(e)=>setActive(e.target.value)}>
-                <option value="cringe">Modo Cringe</option>
-                <option value="spoiler">Modo Spoiler</option>
-                <option value="jingle">Modo Jingle</option>
-              </select>
-            </div>
-
-            <div className={styles.actions}>
-              <button className={styles.flashBtn} onClick={triggerPulse}>Simular flash</button>
-            </div>
+      <div className={styles.heading}>
+        <span className={styles.kicker}>Feito para caber na sua rotina</span>
+        <h2 id="product-title">Pequeno aparelho. Grande alívio.</h2>
+      </div>
+      <div className={styles.panel}>
+        <div className={styles.deviceColumn}>
+          <div className={styles.deviceStage}>
+            <div className={styles.deviceAura} />
+            <ProductDevice className={styles.showcaseDevice} color={color} activeMode="cringe" />
+          </div>
+          <div className={styles.colorPicker} role="radiogroup" aria-label="Escolha a cor do aparelho">
+            {COLORS.map((item, index) => (
+              <button
+                key={item.id}
+                ref={element => { swatchRefs.current[index] = element }}
+                type="button"
+                role="radio"
+                aria-checked={item.value === color}
+                tabIndex={item.value === color ? 0 : -1}
+                aria-label={item.name}
+                className={`${styles.swatch} ${item.value === color ? styles.selected : ''}`}
+                style={{ '--swatch-color': item.value }}
+                onKeyDown={event => handleColorKeyDown(event, index)}
+                onClick={() => setColor(item.value)}
+              >
+                <span className={styles.swatchDot} />
+              </button>
+            ))}
+            <span className={styles.colorName}>{COLORS.find((item) => item.value === color).name}</span>
           </div>
         </div>
 
         <div className={styles.copy}>
-          <h3>{productMock.name}</h3>
-          <p>{productMock.tagline}</p>
+          <div className={styles.productLabel}><span className={styles.labelDot} /> {productMock.brand} / {productMock.name}</div>
+          <p className={styles.tagline}>{productMock.tagline}</p>
+          <p className={styles.description}>Micos, spoilers e músicas grudadas: escolha o que deixar para trás. O Olvida One só age quando você escolhe — e só em você.</p>
           <SpecList specs={productMock.specs} />
-          <p className={styles.note}>As cores disponíveis: Grafite Noturno, Branco Névoa e Violeta Esquecido.</p>
+          <div className={styles.fictionNote}>Protótipo acadêmico · produto fictício</div>
         </div>
       </div>
     </section>

@@ -5,20 +5,30 @@ import { product } from '../../entities/product'
 
 function Stars({value}){
   const full = Math.round(value)
-  return <span aria-hidden>{'★'.repeat(full)}{'☆'.repeat(5-full)}</span>
+  return <span className={styles.stars} role="img" aria-label={`${value} de 5 estrelas`}>{'★'.repeat(full)}{'☆'.repeat(5-full)}</span>
 }
 
 export default function Testimonials(){
   return (
     <section id="avaliacoes" className={styles.section} aria-labelledby="testim-title">
-      <h2 id="testim-title">O que dizem</h2>
-      <div className={styles.meta}>Nota média <strong>{product.rating}</strong> · {product.reviewsCount} avaliações (fictícias)</div>
+      <div className={styles.heading}>
+        <div>
+          <span className={styles.kicker}>Histórias do universo Olvida</span>
+          <h2 id="testim-title">O que dizem por aí</h2>
+        </div>
+        <div className={styles.ratingSummary}>
+          <Stars value={product.rating} />
+          <strong>{product.rating.toLocaleString('pt-BR', { minimumFractionDigits: 1 })} / 5</strong>
+          <span>{product.reviewsCount.toLocaleString('pt-BR')} avaliações fictícias</span>
+        </div>
+      </div>
       <div className={styles.note}>Depoimentos fictícios</div>
       <div className={styles.row}>
         {testimonials.map(t=> (
           <blockquote key={t.name} className={styles.card}>
+            <Stars value={t.rating} />
             <p>“{t.text}”</p>
-            <cite>{t.name} — {t.profile} <Stars value={t.rating} /></cite>
+            <cite><strong>{t.name}</strong><span>{t.profile}</span></cite>
           </blockquote>
         ))}
       </div>

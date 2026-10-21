@@ -1,6 +1,124 @@
-.section{padding:28px 0}
-.meta{color:var(--color-text-muted);margin-bottom:8px}
-.note{color:var(--color-text-muted);font-size:0.9rem;margin-bottom:8px}
-.row{display:flex;gap:12px}
-.card{flex:1;border-left:4px solid var(--color-accent);padding:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border-radius:6px}
-.card cite{display:block;margin-top:8px;color:var(--color-text-muted)}
+.section {
+  padding: clamp(64px, 9vw, 112px) 0;
+}
+
+.heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 17px;
+}
+
+.heading h2 {
+  margin-bottom: 0;
+}
+
+.kicker {
+  display: block;
+  margin-bottom: 11px;
+  color: var(--color-accent);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.ratingSummary {
+  display: grid;
+  justify-items: end;
+  gap: 1px;
+  flex: 0 0 auto;
+  padding-bottom: 3px;
+}
+
+.ratingSummary > strong {
+  color: var(--color-text);
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+}
+
+.ratingSummary > span:last-child {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+}
+
+.stars {
+  display: inline-block;
+  color: var(--color-primary);
+  font-size: 0.87rem;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+}
+
+.note {
+  display: inline-flex;
+  margin-bottom: 20px;
+  padding: 5px 10px;
+  border: 1px solid rgba(178, 140, 255, 0.2);
+  border-radius: var(--radius-pill);
+  color: var(--color-accent);
+  background: rgba(178, 140, 255, 0.06);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.card {
+  display: flex;
+  min-width: 0;
+  min-height: 205px;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0;
+  padding: 22px 23px;
+  border: 1px solid rgba(255, 255, 255, 0.065);
+  border-radius: 16px;
+  background: linear-gradient(145deg, rgba(23, 32, 58, 0.76), rgba(15, 22, 38, 0.82));
+}
+
+.card p {
+  flex: 1;
+  margin: 12px 0 20px;
+  color: var(--color-text);
+  font-family: var(--font-heading);
+  font-size: 0.96rem;
+  line-height: 1.55;
+}
+
+.card cite {
+  display: grid;
+  gap: 1px;
+  color: var(--color-text);
+  font-size: 0.78rem;
+  font-style: normal;
+}
+
+.card cite span {
+  color: var(--color-text-muted);
+  font-size: 0.73rem;
+}
+
+@media (max-width: 640px) {
+  .heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .ratingSummary {
+    justify-items: start;
+  }
+
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .card {
+    min-height: 0;
+  }
+}

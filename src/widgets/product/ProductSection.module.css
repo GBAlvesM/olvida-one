@@ -1,17 +1,185 @@
-.section{padding:28px 0}
-.row{display:flex;gap:20px;align-items:flex-start}
-.deviceWrap{flex:0 0 220px;display:flex;flex-direction:column;align-items:center;gap:12px}
-.controls{display:flex;flex-direction:column;gap:10px;width:220px}
-.colorPick{display:flex;align-items:center;gap:8px}
-.swatch{border:1px solid rgba(255,255,255,0.06);background:transparent;padding:6px;border-radius:8px}
-.swatch span{display:inline-block;width:28px;height:18px;border-radius:6px}
-.swatch.active{outline:2px solid var(--color-accent)}
-.modePick{display:flex;align-items:center;gap:8px}
-.actions{display:flex}
-.flashBtn{background:var(--color-primary);color:var(--color-on-primary);padding:8px 12px;border-radius:8px;border:none}
-.copy{flex:1;color:var(--color-text-muted)}
-.note{margin-top:12px;font-size:0.95rem}
+.section {
+  padding: clamp(64px, 9vw, 112px) 0;
+}
 
-@media (prefers-reduced-motion: reduce){
-  .flashBtn{transition:none}
+.heading {
+  max-width: 680px;
+  margin-bottom: 30px;
+}
+
+.kicker {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--color-accent);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.heading h2 {
+  margin-bottom: 0;
+}
+
+.panel {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.85fr) minmax(0, 1.15fr);
+  gap: clamp(28px, 7vw, 88px);
+  align-items: center;
+  padding: clamp(24px, 5vw, 58px);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(ellipse at 22% 50%, rgba(56, 232, 255, 0.08), transparent 38%),
+    linear-gradient(135deg, rgba(23, 32, 58, 0.85), rgba(15, 22, 38, 0.92));
+  box-shadow: var(--shadow-card);
+}
+
+.deviceColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+}
+
+.deviceStage {
+  position: relative;
+  display: grid;
+  width: 100%;
+  min-height: 410px;
+  place-items: center;
+  isolation: isolate;
+}
+
+.deviceAura {
+  position: absolute;
+  z-index: -1;
+  width: min(100%, 330px);
+  aspect-ratio: 1;
+  border: 1px solid rgba(56, 232, 255, 0.14);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(56, 232, 255, 0.14), rgba(178, 140, 255, 0.04) 48%, transparent 72%);
+  box-shadow: 0 0 70px rgba(56, 232, 255, 0.07);
+}
+
+.deviceStage .showcaseDevice {
+  width: 132px;
+  filter: drop-shadow(0 28px 28px rgba(0, 0, 0, 0.36));
+}
+
+.colorPicker {
+  display: flex;
+  min-height: 46px;
+  align-items: center;
+  gap: 12px;
+}
+
+.swatch {
+  display: grid;
+  width: 37px;
+  height: 37px;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  border-radius: 50%;
+  background: transparent;
+  transition: box-shadow 160ms ease, transform 160ms ease;
+}
+
+.swatch:hover {
+  transform: translateY(-2px);
+}
+
+.selected {
+  box-shadow: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-primary);
+}
+
+.swatchDot {
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  background: var(--swatch-color);
+  box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.35), inset 0 -2px 4px rgba(0, 0, 0, 0.24);
+}
+
+.colorName {
+  margin-left: 2px;
+  color: var(--color-text-muted);
+  font-size: 0.84rem;
+}
+
+.copy {
+  max-width: 590px;
+}
+
+.productLabel {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 18px;
+  color: var(--color-primary);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.labelDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  box-shadow: 0 0 12px rgba(56, 232, 255, 0.7);
+}
+
+.tagline {
+  margin-bottom: 12px;
+  color: var(--color-text);
+  font-family: var(--font-heading);
+  font-size: clamp(1.35rem, 2.5vw, 1.85rem);
+  line-height: 1.35;
+}
+
+.description {
+  max-width: 52ch;
+  margin-bottom: 28px;
+}
+
+.fictionNote {
+  display: inline-flex;
+  margin-top: 25px;
+  padding: 7px 11px;
+  border: 1px solid rgba(178, 140, 255, 0.2);
+  border-radius: var(--radius-pill);
+  color: var(--color-accent);
+  background: rgba(178, 140, 255, 0.06);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+@media (max-width: 720px) {
+  .panel {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+    padding: 24px 18px 28px;
+  }
+
+  .deviceStage {
+    min-height: 340px;
+  }
+
+  .deviceStage .showcaseDevice {
+    width: 112px;
+  }
+
+  .copy {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .swatch {
+    transition: none;
+  }
 }

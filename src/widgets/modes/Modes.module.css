@@ -1,6 +1,0 @@
-.section{padding:28px 0}
-.row{display:flex;gap:18px;align-items:flex-start}
-.device{flex:0 0 140px}
-.list{flex:1;display:flex;flex-direction:column;gap:12px}
-.card{border:1px solid #e6eef2;padding:12px;border-radius:8px;background:#fff}
-.badge{background:#eef8f7;color:var(--accent);display:inline-block;padding:6px 8px;border-radius:6px;font-weight:700;margin-bottom:8px}

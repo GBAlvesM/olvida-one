@@ -1,79 +1,196 @@
-import React, {useState} from 'react'
+import React, { useEffect, useId, useRef, useState } from 'react'
 import styles from './WaitlistForm.module.css'
-// useWaitlistForm is not used because validation is implemented locally in the form
 import SuccessModal from './SuccessModal'
 import { modes } from '../../../entities/memory-mode'
 import { plans } from '../../../entities/plan'
 
-export default function WaitlistForm({ selectedPlanId = null, onPlanChange = ()=>{} }){
-  const [values, setValues] = useState({name:'', email:'', plan: selectedPlanId || plans[0].id, want: modes[0].id, consent:false})
+const EMAIL_PATTERN = /^[^@\s]+@[^@\s]+\.[^@\s]+$/
+
+export default function WaitlistForm({ selectedPlanId = null, onPlanChange = () => {} }) {
+  const id = useId()
+  const [values, setValues] = useState({
+    name: '',
+    email: '',
+    plan: selectedPlanId || plans[0].id,
+    want: modes[0].id,
+    consent: false
+  })
   const [errors, setErrors] = useState({})
+  const [touched, setTouched] = useState({})
   const [loading, setLoading] = useState(false)
-  const [successMsg, setSuccessMsg] = useState(null)
-  
+  const [successMessage, setSuccessMessage] = useState('')
+  const submitTimer = useRef(null)
 
-  function onBlurValidate(){
-    // produce field-specific messages
-    const e = {}
-    if(!values.name || values.name.trim().length<2) e.name = 'Informe seu nome (mínimo 2 caracteres)'
-    if(!values.email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(values.email)) e.email = 'Informe um email válido'
-    if(!values.consent) e.consent = 'Você precisa confirmar que entendeu que é fictício'
-    setErrors(e)
-    return Object.keys(e).length===0
+  useEffect(() => {
+    if (selectedPlanId) {
+      setValues(current => ({ ...current, plan: selectedPlanId }))
+    }
+  }, [selectedPlanId])
+
+  useEffect(() => () => window.clearTimeout(submitTimer.current), [])
+
+  function validateField(field, value) {
+    if (field === 'name' && String(value).trim().length < 2) {
+      return 'Informe seu nome com pelo menos 2 caracteres.'
+    }
+    if (field === 'email' && !EMAIL_PATTERN.test(String(value).trim())) {
+      return 'Informe um e-mail válido.'
+    }
+    if (field === 'consent' && !value) {
+      return 'Confirme que entendeu que o produto é fictício.'
+    }
+    return ''
   }
 
-  async function handleSubmit(e){
-    e.preventDefault()
-    const ok = onBlurValidate()
-    if(!ok) return
+  function updateField(field, value) {
+    setValues(current => ({ ...current, [field]: value }))
+
+    if (touched[field] || errors[field]) {
+      const error = validateField(field, value)
+      setErrors(current => {
+        const next = { ...current }
+        if (error) next[field] = error
+        else delete next[field]
+        return next
+      })
+    }
+  }
+
+  function validateAll() {
+    const nextErrors = {
+      name: validateField('name', values.name),
+      email: validateField('email', values.email),
+      consent: validateField('consent', values.consent)
+    }
+    Object.keys(nextErrors).forEach(field => {
+      if (!nextErrors[field]) delete nextErrors[field]
+    })
+    setErrors(nextErrors)
+    setTouched({ name: true, email: true, consent: true })
+    return Object.keys(nextErrors).length === 0
+  }
+
+  function handleBlur(field) {
+    setTouched(current => ({ ...current, [field]: true }))
+    const error = validateField(field, values[field])
+    setErrors(current => {
+      const next = { ...current }
+      if (error) next[field] = error
+      else delete next[field]
+      return next
+    })
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault()
+    if (loading || !validateAll()) return
+
     setLoading(true)
-    // simulate request
-    await new Promise(res=>setTimeout(res,800))
-    setLoading(false)
-    const pos = Math.floor(1000 + Math.random()*8999)
-    setSuccessMsg(`Você está na lista, ${values.name}! Sua posição fictícia: #${pos}.`)
-    // clear form
-    setValues({name:'', email:'', plan: selectedPlanId || plans[0].id, want: modes[0].id, consent:false})
-    setErrors({})
+    submitTimer.current = window.setTimeout(() => {
+      const position = Math.floor(1000 + Math.random() * 9000)
+      setSuccessMessage(`Você está na lista, ${values.name.trim()}! Sua posição fictícia: #${position}.`)
+      setValues({ name: '', email: '', plan: selectedPlanId || plans[0].id, want: modes[0].id, consent: false })
+      setErrors({})
+      setTouched({})
+      setLoading(false)
+    }, 800)
   }
+
+  const nameErrorId = `${id}-name-error`
+  const emailErrorId = `${id}-email-error`
+  const consentErrorId = `${id}-consent-error`
 
   return (
-    <div>
-      <form className={styles.form} onSubmit={handleSubmit} aria-label="Formulário de lista">
-        <div>
-          <input placeholder="Nome" value={values.name} onChange={e=>setValues({...values,name:e.target.value})} onBlur={()=>onBlurValidate()} aria-invalid={errors.name?true:false} aria-describedby={errors.name? 'err-name':''} />
-          {errors.name && <div id="err-name" className={styles.error}>{errors.name}</div>}
+    <div className={styles.formShell}>
+      <form className={styles.form} onSubmit={handleSubmit} noValidate aria-label="Formulário da lista de espera">
+        <div className={styles.field}>
+          <label htmlFor={`${id}-name`}>Seu nome</label>
+          <input
+            id={`${id}-name`}
+            name="name"
+            type="text"
+            autoComplete="name"
+            placeholder="Como podemos chamar você?"
+            value={values.name}
+            onChange={event => updateField('name', event.target.value)}
+            onBlur={() => handleBlur('name')}
+            aria-invalid={Boolean(errors.name)}
+            aria-describedby={errors.name ? nameErrorId : undefined}
+          />
+          {errors.name && <span id={nameErrorId} className={styles.error}>{errors.name}</span>}
         </div>
 
-        <div>
-          <input placeholder="Email" value={values.email} onChange={e=>setValues({...values,email:e.target.value})} onBlur={()=>onBlurValidate()} aria-invalid={errors.email?true:false} aria-describedby={errors.email? 'err-email':''} />
-          {errors.email && <div id="err-email" className={styles.error}>{errors.email}</div>}
+        <div className={styles.field}>
+          <label htmlFor={`${id}-email`}>E-mail</label>
+          <input
+            id={`${id}-email`}
+            name="email"
+            type="email"
+            autoComplete="email"
+            placeholder="voce@exemplo.com"
+            value={values.email}
+            onChange={event => updateField('email', event.target.value)}
+            onBlur={() => handleBlur('email')}
+            aria-invalid={Boolean(errors.email)}
+            aria-describedby={errors.email ? emailErrorId : undefined}
+          />
+          {errors.email && <span id={emailErrorId} className={styles.error}>{errors.email}</span>}
         </div>
 
-        <div>
-          <label>Plano de interesse</label>
-          <select value={values.plan} onChange={e=>{ setValues({...values,plan:e.target.value}); onPlanChange(e.target.value) }}>
-            {plans.map(p=> <option key={p.id} value={p.id}>{p.name}</option>)}
+        <div className={styles.field}>
+          <label htmlFor={`${id}-plan`}>Plano de interesse</label>
+          <select
+            id={`${id}-plan`}
+            name="plan"
+            value={values.plan}
+            onChange={event => {
+              updateField('plan', event.target.value)
+              onPlanChange(event.target.value)
+            }}
+          >
+            {plans.map(plan => <option key={plan.id} value={plan.id}>{plan.name}</option>)}
           </select>
         </div>
 
-        <div>
-          <label>O que você mais quer esquecer?</label>
-          <select value={values.want} onChange={e=>setValues({...values,want:e.target.value})}>
-            {modes.map(m=> <option key={m.id} value={m.id}>{m.name}</option>)}
+        <div className={styles.field}>
+          <label htmlFor={`${id}-mode`}>O que você mais quer esquecer?</label>
+          <select
+            id={`${id}-mode`}
+            name="mode"
+            value={values.want}
+            onChange={event => updateField('want', event.target.value)}
+          >
+            {modes.map(mode => <option key={mode.id} value={mode.id}>{mode.name}</option>)}
           </select>
         </div>
 
-        <div>
-          <label className={styles.checkbox}><input type="checkbox" checked={values.consent} onChange={e=>setValues({...values,consent:e.target.checked})} /> Entendi que o Olvida One é um produto fictício.</label>
-          {errors.consent && <div className={styles.error}>{errors.consent}</div>}
+        <div className={styles.consentField}>
+          <label className={styles.checkboxLabel} htmlFor={`${id}-consent`}>
+            <input
+              id={`${id}-consent`}
+              name="consent"
+              type="checkbox"
+              checked={values.consent}
+              onChange={event => updateField('consent', event.target.checked)}
+              onBlur={() => handleBlur('consent')}
+              aria-invalid={Boolean(errors.consent)}
+              aria-describedby={errors.consent ? consentErrorId : undefined}
+            />
+            <span className={styles.checkboxMark} aria-hidden="true" />
+            <span>Entendi que o Olvida One é um produto fictício.</span>
+          </label>
+          {errors.consent && <span id={consentErrorId} className={styles.error}>{errors.consent}</span>}
         </div>
 
-        <div>
-          <button type="submit" disabled={loading}>{loading ? 'Enviando...' : 'Entrar na lista'}</button>
-        </div>
+        <button className={styles.submit} type="submit" disabled={loading}>
+          {loading ? <><span className={styles.spinner} aria-hidden="true" /> Enviando…</> : 'Entrar na lista'}
+        </button>
+        <p className={styles.privacyNote}>Simulação local. Nenhum dado é enviado, salvo ou coletado.</p>
       </form>
-      {successMsg && <SuccessModal onClose={()=>setSuccessMsg(null)} message={successMsg} />}
+
+      {successMessage && (
+        <SuccessModal onClose={() => setSuccessMessage('')} message={successMessage} />
+      )}
     </div>
   )
 }

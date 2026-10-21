@@ -1,19 +1,20 @@
-import React from 'react'
-import SiteHeader from '../../../widgets/site-header/SiteHeader'
-import Hero from '../../../widgets/hero/Hero'
-import Benefits from '../../../widgets/benefits/Benefits'
-import HowItWorks from '../../../widgets/how/HowItWorks'
-import ProductSection from '../../../widgets/product/ProductSection'
-import MemoryDemo from '../../../widgets/memory-demo/MemoryDemo'
-import Testimonials from '../../../widgets/testimonials/Testimonials'
-import Pricing from '../../../widgets/pricing/Pricing'
-import { scrollToSection } from '../../../shared/lib/scrollToSection'
-import FAQ from '../../../widgets/faq/FAQ'
-import Waitlist from '../../../widgets/waitlist/Waitlist'
+import React, { useState } from 'react'
+import SiteHeader from '../../../widgets/site-header'
+import Hero from '../../../widgets/hero'
+import Benefits from '../../../widgets/benefits'
+import HowItWorks from '../../../widgets/how'
+import ProductSection from '../../../widgets/product'
+import MemoryDemo from '../../../widgets/memory-demo'
+import Testimonials from '../../../widgets/testimonials'
+import Pricing from '../../../widgets/pricing'
+import FAQ from '../../../widgets/faq'
+import Waitlist from '../../../widgets/waitlist'
 import styles from './LandingPage.module.css'
-import SiteFooter from '../../../widgets/site-footer/SiteFooter'
+import SiteFooter from '../../../widgets/site-footer'
 
 export default function LandingPage(){
+  const [selectedPlanId, setSelectedPlanId] = useState('solo')
+
   return (
     <div className={styles.page}>
       <SiteHeader />
@@ -25,9 +26,9 @@ export default function LandingPage(){
         <ProductSection />
         <MemoryDemo />
         <Testimonials />
-        <Pricing onSelectPlan={()=>{ scrollToSection('lista') }} />
+        <Pricing onSelectPlan={setSelectedPlanId} />
         <FAQ />
-        <Waitlist />
+        <Waitlist selectedPlanId={selectedPlanId} onPlanChange={setSelectedPlanId} />
       </main>
 
       <SiteFooter />
