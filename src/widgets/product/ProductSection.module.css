@@ -72,13 +72,13 @@
   display: flex;
   min-height: 46px;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
 .swatch {
   display: grid;
-  width: 37px;
-  height: 37px;
+  width: 44px;
+  height: 44px;
   place-items: center;
   padding: 0;
   border: 1px solid rgba(255, 255, 255, 0.26);

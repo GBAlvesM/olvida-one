@@ -17,6 +17,7 @@
   display: inline-flex;
   flex: 0 0 auto;
   align-items: center;
+  min-height: 44px;
   gap: 9px;
   color: var(--color-text);
   font-family: var(--font-heading);
@@ -41,6 +42,9 @@
 
 .nav a {
   position: relative;
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
   padding: 8px 0;
   color: var(--color-text-muted);
   font-size: 0.83rem;
@@ -70,7 +74,7 @@
 }
 
 .cta {
-  min-height: 41px;
+  min-height: 44px;
   padding: 0 16px;
   border: 1px solid rgba(56, 232, 255, 0.44);
   border-radius: var(--radius-pill);
@@ -89,8 +93,8 @@
 
 .burger {
   display: none;
-  width: 43px;
-  height: 43px;
+  width: 44px;
+  height: 44px;
   padding: 10px;
   border: 1px solid var(--color-border);
   border-radius: 12px;
