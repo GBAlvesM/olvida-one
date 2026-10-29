@@ -20,6 +20,7 @@ export default function WaitlistForm({ selectedPlanId = null, onPlanChange = () 
   const [loading, setLoading] = useState(false)
   const [successMessage, setSuccessMessage] = useState('')
   const submitTimer = useRef(null)
+  const submitButton = useRef(null)
 
   useEffect(() => {
     if (selectedPlanId) {
@@ -182,14 +183,14 @@ export default function WaitlistForm({ selectedPlanId = null, onPlanChange = () 
           {errors.consent && <span id={consentErrorId} className={styles.error}>{errors.consent}</span>}
         </div>
 
-        <button className={styles.submit} type="submit" disabled={loading}>
+        <button ref={submitButton} className={styles.submit} type="submit" disabled={loading}>
           {loading ? <><span className={styles.spinner} aria-hidden="true" /> Enviando…</> : 'Entrar na lista'}
         </button>
         <p className={styles.privacyNote}>Simulação local. Nenhum dado é enviado, salvo ou coletado.</p>
       </form>
 
       {successMessage && (
-        <SuccessModal onClose={() => setSuccessMessage('')} message={successMessage} />
+        <SuccessModal onClose={() => setSuccessMessage('')} returnFocusRef={submitButton} message={successMessage} />
       )}
     </div>
   )

@@ -2,9 +2,9 @@ import React from 'react'
 import styles from './SuccessModal.module.css'
 import { Modal } from '../../../shared/ui'
 
-export default function SuccessModal({onClose, message}){
+export default function SuccessModal({onClose, message, returnFocusRef}){
   return (
-    <Modal onClose={onClose} labelledBy="success-title">
+    <Modal onClose={onClose} labelledBy="success-title" returnFocusRef={returnFocusRef}>
       <div className={styles.boxInner}>
         <div className={styles.successMark} aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none">

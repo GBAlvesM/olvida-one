@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import styles from './Modal.module.css'
 import { useEscapeKey } from '../lib/useEscapeKey'
 
-export default function Modal({ children, onClose, labelledBy }){
+export default function Modal({ children, onClose, labelledBy, returnFocusRef }){
   const ref = useRef(null)
   // close on escape
   useEscapeKey(()=> onClose && onClose())
@@ -16,14 +16,11 @@ export default function Modal({ children, onClose, labelledBy }){
     if(btn) btn.focus()
     return ()=>{
       document.body.style.overflow = prevOverflow
-      // restore focus to previous active element if possible
-      try {
-        if(previousActive && previousActive.focus) previousActive.focus()
-      } catch (err) {
-        // ignore focus restore errors
-      }
+      // Async dialogs may open after the submit button loses focus; prefer the explicit trigger.
+      const returnFocus = returnFocusRef?.current || previousActive
+      if (returnFocus?.isConnected && returnFocus.focus) returnFocus.focus()
     }
-  },[])
+  },[returnFocusRef])
 
   function handleKeyDown(event) {
     if (event.key !== 'Tab' || !ref.current) return
